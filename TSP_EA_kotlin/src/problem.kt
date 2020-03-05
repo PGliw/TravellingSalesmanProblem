@@ -5,7 +5,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
- * @param id city unique indentifier
+ * @param id city unique identifier
  * @param x 1st coordinate
  * @param y 2nd coordinate
  */
@@ -24,6 +24,7 @@ sealed class City(val id: Int, val x: Float, val y: Float) {
             else -> throw IncompatibleCitiesException("Required cityGeo type not found")
         }
     }
+    override fun toString() = "City #$id ($x, $y)"
 }
 
 /**

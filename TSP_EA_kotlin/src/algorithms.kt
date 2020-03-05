@@ -2,7 +2,7 @@
  * @param cities list of all cities
  * @return route optimized by greedy algorithm
  */
-fun greedyAlghoritm(cities: List<City>): List<City> {
+fun greedyAlgorithm(cities: List<City>): List<City> {
     val routes = mutableSetOf<List<City>>()
     for (firstCity in cities) {
         val citiesWaiting = mutableSetOf<City>()
@@ -25,7 +25,7 @@ fun greedyAlghoritm(cities: List<City>): List<City> {
  * @param draws number of draws (potential result)
  * @return best of draws (with lowest fitness function value)
  */
-fun randomAlghoritm(cities: List<City>, draws: Int): List<City> {
+fun randomAlgorithm(cities: List<City>, draws: Int): List<City> {
     var i = 0
     var bestResult = Float.MAX_VALUE
     var result: List<City>? = null
