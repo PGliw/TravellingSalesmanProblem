@@ -10,7 +10,7 @@ fun greedyAlgorithm(cities: List<City>): List<City> {
         citiesWaiting.remove(firstCity)
         val route = mutableSetOf(firstCity)
         while (citiesWaiting.isNotEmpty()) {
-            val closestCity = citiesWaiting.minBy { city -> city.distTo(firstCity) }
+            val closestCity = citiesWaiting.minBy { city -> city.distTo(route.last()) }
                 ?: throw RouteNotFoundException("Closest city not found")
             citiesWaiting.remove(closestCity)
             route.add(closestCity)
