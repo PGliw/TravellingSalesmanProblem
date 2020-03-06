@@ -37,7 +37,7 @@ fun loadData(filePath: String): List<City> {
         ?: throw  DataFileFormatException("The file does not contain correct edge weight type info")
     if (edgeWeightLine.size < 2) throw DataFileFormatException("The file type info is incorrectly formatted")
     val digitLines = lines.filter { line -> line.firstOrNull()?.isDigit() ?: false }
-    val splitLines = digitLines.map { it.split(" ") }
+    val splitLines = digitLines.map { line -> line.split(" ").filter { it.isNotEmpty() } }
     return splitLines.map { list ->
         if (list.size < 3) throw DataFileFormatException("There are only ${list.size} columns")
         val id = list[0].toIntOrNull() ?: throw DataFileFormatException("First column - ${list[0]} - is not an integer")

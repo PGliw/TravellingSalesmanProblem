@@ -30,7 +30,7 @@ fun randomAlgorithm(cities: List<City>, draws: Int): List<City> {
     var bestResult = Float.MAX_VALUE
     var result: List<City>? = null
     while (i < draws) {
-        val candidate = cities.shuffled()
+        val candidate = randomRoute(cities)
         val fitness = fitness(candidate)
         if (fitness < bestResult) {
             bestResult = fitness

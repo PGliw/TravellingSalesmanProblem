@@ -4,7 +4,7 @@
 
 // Optymalizacja - macierz odległości między miastami
 
-fun printCities(cities: List<City>){
+fun printCities(cities: List<City>) {
     for ((index, city) in cities.withIndex()) {
         println(city)
         println("|  " + city.distTo(cities[(index + 1) % cities.size]))
@@ -12,7 +12,22 @@ fun printCities(cities: List<City>){
 }
 
 fun main() {
-    val cities = loadData("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\berlin11_modified.tsp")
+    // fine: 1, 2
+    // fine, but slow: 3
+    // too slow or not fine: 0
+    val filenames = listOf(
+        "ali535.tsp",
+        "berlin11_modified.tsp",
+        "berlin52.tsp",
+        "fl417.tsp",
+        "gr666.tsp",
+        "kroA100.tsp",
+        "kroA150.tsp",
+        "kroA200.tsp",
+        "nrw1379.tsp",
+        "pr2392.tsp"
+    )
+    val cities = loadData("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[1]}")
     println("---------Cities---------")
     printCities(cities)
     println("------------------------\n")
