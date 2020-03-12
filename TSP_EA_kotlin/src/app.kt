@@ -27,22 +27,21 @@ fun main() {
         "nrw1379.tsp",
         "pr2392.tsp"
     )
-    val cities = loadData("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[1]}")
-    println("---------Cities---------")
-    printCities(cities)
-    println("------------------------\n")
 
-    val greedyRoute = greedyAlgorithm(cities)
-    println("---------Greedy---------")
+    val problem = Problem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[1]}")
+
+    val greedyRoute = problem.greedy()
+    println("---------Greedy route---------")
     printCities(greedyRoute)
     println("------------------------")
     println("Greedy fitness: ${fitness(greedyRoute)}")
     println("------------------------\n")
 
-    val randomRoute = randomAlgorithm(cities, 10)
-    println("---------Random---------")
+    val randomRoute = problem.random(10)
+    println("---------Random problem---------")
     printCities(randomRoute)
     println("------------------------")
     println("Random fitness: ${fitness(randomRoute)}")
     println("------------------------")
+
 }
