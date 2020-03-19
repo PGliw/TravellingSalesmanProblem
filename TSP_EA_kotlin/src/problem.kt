@@ -1,3 +1,7 @@
+import kotlin.random.Random
+
+typealias Route = List<City>
+
 class Problem(filePath: String) {
     private val cities = loadData(filePath)
     private val distances = mutableMapOf<Pair<City, City>, Float>().apply {
@@ -15,11 +19,9 @@ class Problem(filePath: String) {
     private fun distanceFun(city1: City, city2: City) =
         distances[Pair(city1, city2)] ?: error("Pair of cities (${city1.id}, ${city2.id})")
 
-    private fun fitnessFun(route: List<City>) = fitness(route, this::distanceFun)
+    private fun fitnessFun(route: Route) = fitness(route, this::distanceFun)
 
     fun greedy() = greedyAlgorithm(cities, this::distanceFun, this::fitnessFun)
 
     fun random(draws: Int) = randomAlgorithm(cities, draws, this::fitnessFun)
 }
-
-

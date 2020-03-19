@@ -1,3 +1,5 @@
+import java.util.*
+
 // 1. Loading data + fitness fun (1 pkt.)
 // 2. Random method (1 pkt.)
 // 3. Alg. zachłanny
@@ -28,7 +30,7 @@ fun main() {
         "pr2392.tsp"
     )
 
-    val problem = Problem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[1]}")
+    val problem = Problem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[3]}")
 
     val greedyRoute = problem.greedy()
     println("---------Greedy route---------")
