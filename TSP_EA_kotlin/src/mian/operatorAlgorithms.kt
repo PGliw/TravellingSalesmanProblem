@@ -13,6 +13,7 @@ fun initialize(
     populationSize: Int,
     random: Random = Random
 ): Set<Route> = mutableSetOf<Route>().apply {
+    if(populationSize < 0) throw IllegalArgumentException("Population size must be less than 0 (now: $populationSize)")
     while (size < populationSize) add(randomRoute(cities, random))
 }.toSet()
 
@@ -96,7 +97,6 @@ fun orderedCrossOver(
             }
             this.add(city)
         }
-        println("Child: ${this.map { it.id }}")
     }.toList()
 }
 

@@ -18,7 +18,12 @@ internal class OperatorAlgorithmsKtTest {
     }
 
     @Test(expected = IllegalArgumentException::class)
-    fun `roulette selection should throw  illegal argument exception`() {
+    fun `initialize should throw IllegalArgumetException`(){
+        val result = initialize(cities, -1, random)
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun `roulette selection should throw  IllegalArgumentException`() {
         val result = rouletteSelection(randomRoutes.toList(), 5.0, random)
     }
 
@@ -57,22 +62,28 @@ internal class OperatorAlgorithmsKtTest {
     fun `orderedCrossOver should return child` () {
         val result = orderedCrossOver(randomRoutes.toList()[3], randomRoutes.toList()[4], random)
         val expected = listOf(
-            cities[1],
-            cities[10],
-            cities[6],
-            cities[0],
-            cities[5],
-            cities[2],
             cities[4],
-            cities[9],
+            cities[6],
             cities[3],
             cities[7],
+            cities[10],
+            cities[5],
+            cities[9],
+            cities[1],
+            cities[2],
+            cities[0],
             cities[8]
         )
         assertEquals(expected, result)
     }
 
     @Test
-    fun orderChangingMutationTest() {
+    fun `orderChangingMutation should return (3, 4, 9, 10, 2, 11, 5, 1, 8, 6, 7)`() {
+        val result = orderChangingMutation(randomRoutes.toList()[7], random)
+    }
+
+    @Test
+    fun `orderChangingMutation should return (6, 4, 10, 5, 9, 11, 2, 8, 7, 1, 3)`() {
+        val result = orderChangingMutation(randomRoutes.toList()[9], Random(73))
     }
 }
