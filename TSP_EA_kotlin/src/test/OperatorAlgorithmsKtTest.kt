@@ -1,8 +1,6 @@
 package test
 
-import mian.initialize
-import mian.loadData
-import mian.rouletteSelection
+import mian.*
 import org.junit.Before
 import org.junit.Test
 import kotlin.random.Random
@@ -25,13 +23,15 @@ internal class OperatorAlgorithmsKtTest {
     }
 
     @Test
-    fun `roulette selection should pass`() {
+    fun `roulette selection should return route #7`() {
         val result = rouletteSelection(randomRoutes.toList(), 0.1, random)
         assertEquals(randomRoutes.toList()[7], result)
     }
 
     @Test
-    fun tournamentSelectionTest() {
+    fun `tournamentSelection should return route #6`() {
+        val result = tournamentSelection(randomRoutes.toList(), 6, random)
+        assertEquals(randomRoutes.toList()[6], result)
     }
 
     @Test

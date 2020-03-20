@@ -32,19 +32,11 @@ fun rouletteSelection(
     val total = population.sumByDouble { route -> fitnessFun(route).toDouble() + minStep }
     val weights = population.map { route -> (fitnessFun(route).toDouble() + minStep) / total }
     val roulette = population.zip(weights)
-    for ((i, p) in roulette.withIndex()) {
-//        println("route #$i fitness: ${fitnessFun(p.first)}, weight: ${p.second}")
-        println(p.second)
-    }
-    println(weights.sum())
     val randomStop = random.nextDouble(0.0, 1.0)
     var partialSum = 0.0
-    for ((i, field) in roulette.withIndex()) {
+    for (field in roulette) {
         partialSum += field.second
-        if (partialSum >= randomStop) {
-            println("SELCECTED: \n route #$i fitness: ${fitnessFun(field.first)}, weight: ${field.second}, partialSum: $partialSum, randomStop: $randomStop")
-            return field.first
-        }
+        if (partialSum >= randomStop) return field.first
     }
     throw RouteNotFoundException("Roulette selection did not select any route")
 }
@@ -62,16 +54,17 @@ fun tournamentSelection(
     fitnessFun: (Route) -> Float = { route -> fitness(route) }
 ): Route {
     if (participants > population.size || participants < 0)
-        throw InvalidParticipantsNumberException("Participants number ($participants) must be in range <0, ${population.size})")
+        throw IllegalArgumentException("Participants number ($participants) must be in range <0, ${population.size})")
 
-    val selection = mutableListOf<Route>()
+    val selection = mutableSetOf<Route>()
     var i = 0
-    while (i < participants) {
+    while (selection.size < participants) {
         val randomIndex = random.nextInt(population.size)
         selection.add(population[randomIndex])
         i++
     }
-    return selection.minBy { route -> fitnessFun(route) } ?: throw RouteNotFoundException("minBy returned null route")
+    return selection.minBy { route -> fitnessFun(route) }
+        ?: throw RouteNotFoundException("Tournament selection did not select any route")
 }
 
 /**
