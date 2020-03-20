@@ -1,14 +1,14 @@
 package test
 
-import mian.Problem
+import mian.RandomProblem
 import org.junit.Test
-import kotlin.random.Random
 
 internal class ProblemTest {
-    val problem = Problem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\berlin11_modified.tsp", Random(10))
+    private val problem =
+        RandomProblem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\berlin11_modified.tsp", 5)
 
     @Test
-    fun geneticTest(){
-        val result = problem.genetic(6, 0.5f, 0.8f, 200, 4)
+    fun geneticTest() {
+        val result = problem.solve()
     }
 }

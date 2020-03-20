@@ -1,5 +1,6 @@
-package mian
+package mian.algorithms
 
+import mian.*
 import kotlin.random.Random
 
 /**

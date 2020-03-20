@@ -30,17 +30,20 @@ fun main() {
         "pr2392.tsp"
     )
 
-    val problem =
-        Problem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[3]}")
+    val greedyProblem =
+        GreedyProblem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[3]}")
 
-    val greedyRoute = problem.greedy()
+    val greedyRoute = greedyProblem.solve()
     println("---------Greedy route---------")
     printCities(greedyRoute)
     println("------------------------")
     println("Greedy mian.fitness: ${fitness(greedyRoute)}")
     println("------------------------\n")
 
-    val randomRoute = problem.random(10)
+    val randomProblem =
+        RandomProblem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[3]}",  10)
+
+    val randomRoute = randomProblem.solve()
     println("---------Random problem---------")
     printCities(randomRoute)
     println("------------------------")

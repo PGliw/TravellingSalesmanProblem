@@ -1,6 +1,7 @@
 package test
 
 import mian.*
+import mian.algorithms.*
 import org.junit.Before
 import org.junit.Test
 import kotlin.random.Random
@@ -41,7 +42,11 @@ internal class OperatorAlgorithmsKtTest {
 
     @Test
     fun `orderedCrossOver should return child (2, 6, 4, 8, 10, 3, 9, 11, 7, 1, 5)`() {
-        val result = orderedCrossOver(randomRoutes.toList()[8], randomRoutes.toList()[2], Random(56))
+        val result = orderedCrossOver(
+            randomRoutes.toList()[8],
+            randomRoutes.toList()[2],
+            Random(56)
+        )
         val expected = listOf(
             cities[1],
             cities[5],
@@ -60,7 +65,11 @@ internal class OperatorAlgorithmsKtTest {
 
     @Test
     fun `orderedCrossOver should return child` () {
-        val result = orderedCrossOver(randomRoutes.toList()[3], randomRoutes.toList()[4], random)
+        val result = orderedCrossOver(
+            randomRoutes.toList()[3],
+            randomRoutes.toList()[4],
+            random
+        )
         val expected = listOf(
             cities[4],
             cities[6],
