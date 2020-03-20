@@ -1,21 +1,24 @@
 package main.problem.evolutionary
 
+import main.problem.ILogger
+import main.problem.Problem
+import main.problem.Route
 import main.utils.RouteNotFoundException
-import main.problem.*
 import kotlin.random.Random
 
 class GAProblem(
     filePath: String,
-    private val initializer: IInitializer,
-    private val selector: ISelector,
+    var initializer: IInitializer,
+    var selector: ISelector,
     private val crosser: ICrosser,
-    private val mutator: IMutator,
-    private val crossOverProbability: Float,
-    private val mutationProbability: Float,
-    private val generations: Int,
+    var mutator: IMutator,
+    var crossOverProbability: Float,
+    var mutationProbability: Float,
+    var generations: Int,
+    logger: ILogger? = null,
     random: Random = Random
-) :
-    Problem(filePath, random) {
+    ) :
+    Problem(filePath, logger, random) {
 
     init {
         if (crossOverProbability < 0 || crossOverProbability > 1) throw IllegalArgumentException("crossOverProbability must be between 0.0 and 1.0. Now is: $crossOverProbability")
@@ -23,10 +26,14 @@ class GAProblem(
         selector.register(this)
     }
 
-    override fun solve(): Route {
+    override fun solution(): Route {
         val initialPopulation = initializer.initialize(cities)
-        var bestResult: Route? = null
+        logger?.logLine("Generation; Best result; Mean result;")
         var population = initialPopulation
+        var bestResult = population.minBy { fitness(it) }
+            ?: throw RouteNotFoundException("Generic algorithm did not found the route")
+        var meanFitness = population.sumByDouble { fitness(it).toDouble() } / population.size
+        logger?.logLine("$0; ${fitness(bestResult)}; $meanFitness")
         for (generationNo in 1..generations) {
             val newGeneration = mutableSetOf<Route>()
             while (newGeneration.size < initializer.populationSize) {
@@ -45,9 +52,10 @@ class GAProblem(
             }
             population = newGeneration
             bestResult = population.minBy { fitness(it) }
-//            println("generation #$generationNo: ${bestResult?.map{it.id}}, ${fitnessFun(bestResult!!)}")
-//            println("generation #$generationNo - sum: ${population.sumByDouble { fitnessFun(it).toDouble() }}")
+                ?: throw RouteNotFoundException("Generic algorithm did not found the route")
+            meanFitness = population.sumByDouble { fitness(it).toDouble() } / population.size
+            logger?.logLine("$generationNo; ${fitness(bestResult)}; $meanFitness")
         }
-        return bestResult ?: throw RouteNotFoundException("Generic algorithm did not found the route")
+        return bestResult
     }
 }

@@ -1,5 +1,6 @@
 package test
 
+import DATASETS_DIR
 import main.algorithms.*
 import main.problem.loadData
 import org.junit.Before
@@ -11,7 +12,7 @@ internal class OperatorAlgorithmsKtTest {
 
     private var random = Random(7)
     private val cities =
-        loadData("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\berlin11_modified.tsp")
+        loadData("${DATASETS_DIR}\\berlin11_modified.tsp")
     private val randomRoutes = initialize(cities, 10, random)
 
     @Before

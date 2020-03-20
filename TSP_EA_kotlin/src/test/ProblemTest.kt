@@ -1,12 +1,13 @@
 package test
 
+import DATASETS_DIR
 import main.problem.traditional.RandomProblem
 import org.junit.Test
 
 internal class ProblemTest {
     private val problem =
         RandomProblem(
-            "C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\berlin11_modified.tsp",
+            "${DATASETS_DIR}\\berlin11_modified.tsp",
             5
         )
 

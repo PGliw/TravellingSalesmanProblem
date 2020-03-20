@@ -4,8 +4,9 @@ import kotlin.random.Random
 
 typealias Route = List<City>
 
-abstract class Problem(filePath: String, protected val random: Random = Random) :
-    IFitnessProvider {
+abstract class Problem(
+    filePath: String, protected val logger: ILogger? = null, protected val random: Random = Random
+) : IFitnessProvider {
     protected val cities = loadData(filePath)
     private val distances = mutableMapOf<Pair<City, City>, Float>().apply {
         for (city1 in cities) {
@@ -25,7 +26,14 @@ abstract class Problem(filePath: String, protected val random: Random = Random) 
     override fun fitness(route: Route) =
         fitness(route, this::distanceFun)
 
-    abstract fun solve(): Route
+    fun solve(): Route {
+        val result = solution()
+        logger?.logLine("Overall solution: ${fitness(result)}")
+        logger?.close()
+        return result
+    }
+
+    protected abstract fun solution(): Route
 }
 
 
