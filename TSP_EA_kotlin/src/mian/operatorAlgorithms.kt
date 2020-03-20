@@ -83,19 +83,20 @@ fun orderedCrossOver(
     do {
         indexes[0] = random.nextInt(parent1.size)
         indexes[1] = random.nextInt(parent2.size)
-    } while (indexes[0] != indexes[1])
+    } while (indexes[0] == indexes[1])
     indexes.sort()
     val fromParent1 = parent1.subList(indexes[0], indexes[1]).toMutableList()
     val fromParent2 = parent2.filter { city -> city !in fromParent1 }.toMutableList()
     return mutableListOf<City>().apply {
-        for (index in 0..parent1.size) {
+        for (index in parent1.indices) {
             val city = when {
                 index < indexes[0] -> fromParent2.removeAt(0)
                 index in indexes[0] until indexes[1] -> fromParent1.removeAt(0)
-                else -> fromParent2.removeAt(9)
+                else -> fromParent2.removeAt(0)
             }
             this.add(city)
         }
+        println("Child: ${this.map { it.id }}")
     }.toList()
 }
 

@@ -35,7 +35,41 @@ internal class OperatorAlgorithmsKtTest {
     }
 
     @Test
-    fun orderedCrossOverTest() {
+    fun `orderedCrossOver should return child (2, 6, 4, 8, 10, 3, 9, 11, 7, 1, 5)`() {
+        val result = orderedCrossOver(randomRoutes.toList()[8], randomRoutes.toList()[2], Random(56))
+        val expected = listOf(
+            cities[1],
+            cities[5],
+            cities[3],
+            cities[7],
+            cities[9],
+            cities[2],
+            cities[8],
+            cities[10],
+            cities[6],
+            cities[0],
+            cities[4]
+        )
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `orderedCrossOver should return child` () {
+        val result = orderedCrossOver(randomRoutes.toList()[3], randomRoutes.toList()[4], random)
+        val expected = listOf(
+            cities[1],
+            cities[10],
+            cities[6],
+            cities[0],
+            cities[5],
+            cities[2],
+            cities[4],
+            cities[9],
+            cities[3],
+            cities[7],
+            cities[8]
+        )
+        assertEquals(expected, result)
     }
 
     @Test
