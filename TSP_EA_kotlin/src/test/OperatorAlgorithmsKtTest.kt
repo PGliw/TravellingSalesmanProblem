@@ -1,7 +1,7 @@
 package test
 
-import mian.*
-import mian.algorithms.*
+import main.algorithms.*
+import main.problem.loadData
 import org.junit.Before
 import org.junit.Test
 import kotlin.random.Random
@@ -10,7 +10,8 @@ import kotlin.test.assertEquals
 internal class OperatorAlgorithmsKtTest {
 
     private var random = Random(7)
-    private val cities = loadData("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\berlin11_modified.tsp")
+    private val cities =
+        loadData("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\berlin11_modified.tsp")
     private val randomRoutes = initialize(cities, 10, random)
 
     @Before

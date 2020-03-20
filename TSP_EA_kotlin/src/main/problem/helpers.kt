@@ -1,7 +1,7 @@
-package mian
+package main.problem
 
+import main.utils.DataFileFormatException
 import java.io.File
-import kotlin.random.Random
 
 /**
  * @param filePath path to file with list of cities
@@ -45,7 +45,11 @@ fun fitness(
 }
 
 /**
- * @param cities list of cities to be shuffled
- * @return random sequence of cities
+ * Prints the route to the console as a list of cities with distances between each other
  */
-fun randomRoute(cities: List<City>, random: Random = Random) = cities.shuffled(random)
+fun Route.print() {
+    for ((index, city) in this.withIndex()) {
+        println(city)
+        println("|  " + city.distTo(this[(index + 1) % this.size]))
+    }
+}

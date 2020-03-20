@@ -1,6 +1,10 @@
-package mian.algorithms
+package main.algorithms
 
-import mian.*
+import main.problem.City
+import main.problem.Route
+import main.problem.fitness
+import main.utils.IncompatibleRoutesException
+import main.utils.RouteNotFoundException
 import kotlin.random.Random
 
 /**

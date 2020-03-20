@@ -1,5 +1,6 @@
-package mian
+package main.problem
 
+import main.utils.IncompatibleCitiesException
 import kotlin.math.PI
 import kotlin.math.acos
 import kotlin.math.pow
