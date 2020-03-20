@@ -1,3 +1,7 @@
+package mian
+
+import kotlin.random.Random
+
 /**
  * @param cities list of all cities to be visited
  * @param distanceFun function calculating distance between cities
@@ -8,7 +12,7 @@ fun greedyAlgorithm(
     cities: List<City>,
     distanceFun: (City, City) -> Float = { city1, city2 -> city1.distTo(city2) },
     fitnessFun: (List<City>) -> Float = { route -> fitness(route) }
-): List<City> {
+): Route {
     val routes = mutableSetOf<List<City>>()
     for (firstCity in cities) {
         val citiesWaiting = mutableSetOf<City>()
@@ -31,18 +35,20 @@ fun greedyAlgorithm(
  * @param cities list of all cities to be visited
  * @param draws number of draws (potential results)
  * @param fitnessFun cost function to be optimized
- * @return best of draws (route with lowest fitness function value)
+ * @param random Random generator used for route generation
+ * @return route with lowest mian.fitness function value within the draws
  */
 fun randomAlgorithm(
     cities: List<City>,
     draws: Int,
+    random: Random = Random,
     fitnessFun: (List<City>) -> Float = { route -> fitness(route) }
-): List<City> {
+): Route {
     var i = 0
     var bestResult = Float.MAX_VALUE
     var result: List<City>? = null
     while (i < draws) {
-        val candidate = randomRoute(cities)
+        val candidate = randomRoute(cities, random)
         val fitness = fitnessFun(candidate)
         if (fitness < bestResult) {
             bestResult = fitness
@@ -50,5 +56,5 @@ fun randomAlgorithm(
         }
         i++
     }
-    return result ?: throw RouteNotFoundException("rendomAlghorim did not found result")
+    return result ?: throw RouteNotFoundException("rendomAlghorim did not find result")
 }

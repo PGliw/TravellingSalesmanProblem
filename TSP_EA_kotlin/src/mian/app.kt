@@ -1,6 +1,6 @@
-import java.util.*
+package mian
 
-// 1. Loading data + fitness fun (1 pkt.)
+// 1. Loading data + mian.fitness fun (1 pkt.)
 // 2. Random method (1 pkt.)
 // 3. Alg. zachłanny
 
@@ -30,20 +30,21 @@ fun main() {
         "pr2392.tsp"
     )
 
-    val problem = Problem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[3]}")
+    val problem =
+        Problem("C:\\Users\\Piotr\\jvm-workspace\\untitled\\TSP_EA_kotlin\\${filenames[3]}")
 
     val greedyRoute = problem.greedy()
     println("---------Greedy route---------")
     printCities(greedyRoute)
     println("------------------------")
-    println("Greedy fitness: ${fitness(greedyRoute)}")
+    println("Greedy mian.fitness: ${fitness(greedyRoute)}")
     println("------------------------\n")
 
     val randomRoute = problem.random(10)
     println("---------Random problem---------")
     printCities(randomRoute)
     println("------------------------")
-    println("Random fitness: ${fitness(randomRoute)}")
+    println("Random mian.fitness: ${fitness(randomRoute)}")
     println("------------------------")
 
 }

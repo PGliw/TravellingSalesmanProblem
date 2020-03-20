@@ -1,4 +1,7 @@
+package mian
+
 import java.io.File
+import kotlin.random.Random
 
 /**
  * @param filePath path to file with list of cities
@@ -45,4 +48,4 @@ fun fitness(
  * @param cities list of cities to be shuffled
  * @return random sequence of cities
  */
-fun randomRoute(cities: List<City>) = cities.shuffled()
+fun randomRoute(cities: List<City>, random: Random = Random) = cities.shuffled(random)
