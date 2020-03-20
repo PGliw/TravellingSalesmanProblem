@@ -1,11 +1,11 @@
 package main
 
-import main.problem.Problem
-import main.utils.RouteNotFoundException
-import kotlin.math.pow
-import kotlin.math.sqrt
-
-data class ExaminationResult(val best: Float, val worst: Float, val avg: Float, val std: Float)
+import DATASETS_DIR
+import main.problem.ConsoleLogger
+import main.problem.evolutionary.*
+import main.problem.traditional.GreedyProblem
+import main.problem.traditional.RandomProblem
+import kotlin.random.Random
 
 fun main() {
 
@@ -22,30 +22,28 @@ fun main() {
         "pr2392.tsp"
     )
 
-//    val output = File("$RESULTS_DIR\\${filePath}")
+    val filepath = "$DATASETS_DIR\\${filenames[3]}"
 
+    val random = Random(10)
+    println("----- Greedy -----")
+    GreedyProblem(filepath, ConsoleLogger(), random).solve()
+    println()
+
+    println("----- Random -----")
+    RandomProblem(filepath, 60, ConsoleLogger(), random).solve()
+    println()
+
+    println("----- Genetic Algorithm -----")
+    GAProblem(
+        filepath,
+        RandomInitializer(10, random),
+        TournamentSelector(10, random),
+        OrderedCrosser(random),
+        SwapMutator(random),
+        0.5f, 0.2f, 100,
+        ConsoleLogger(), random
+    ).solve()
+    println()
 
 }
 
-fun Problem.examinate(repetitions: Int): ExaminationResult {
-    if (repetitions <= 0) throw IllegalArgumentException("Number of repetitions must be greater than 0 (now: $repetitions")
-    val results = mutableListOf<Float>()
-    repeat(repetitions) {
-        val result = solve()
-        results.add(fitness(result))
-    }
-    return ExaminationResult(
-        results.min() ?: throw RouteNotFoundException("Best route not found"),
-        results.max() ?: throw RouteNotFoundException("Worst route not found"),
-        results.average().toFloat(),
-        results.std().toFloat()
-    )
-}
-
-fun Collection<Float>.std(): Double {
-    val avg = average()
-    val sd = fold(0.0) { accumulator, next ->
-        accumulator + (next - avg).pow(2)
-    }
-    return sqrt(sd / size)
-}
