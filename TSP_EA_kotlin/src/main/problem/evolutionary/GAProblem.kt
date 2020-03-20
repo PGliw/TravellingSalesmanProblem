@@ -17,7 +17,7 @@ class GAProblem(
     var generations: Int,
     logger: ILogger? = null,
     random: Random = Random
-    ) :
+) :
     Problem(filePath, logger, random) {
 
     init {
@@ -26,14 +26,20 @@ class GAProblem(
         selector.register(this)
     }
 
+    private val detailLogger: ILogger?
+        get() = when {
+            logger?.isDetailed() == true -> logger
+            else -> null
+        }
+
     override fun solution(): Route {
         val initialPopulation = initializer.initialize(cities)
-        logger?.logLine("Generation; Best result; Mean result;")
+        detailLogger?.logLine("Generation; Best result; Mean result;")
         var population = initialPopulation
         var bestResult = population.minBy { fitness(it) }
             ?: throw RouteNotFoundException("Generic algorithm did not found the route")
         var meanFitness = population.sumByDouble { fitness(it).toDouble() } / population.size
-        logger?.logLine("$0; ${fitness(bestResult)}; $meanFitness")
+        detailLogger?.logLine("$0; ${fitness(bestResult)}; $meanFitness")
         for (generationNo in 1..generations) {
             val newGeneration = mutableSetOf<Route>()
             while (newGeneration.size < initializer.populationSize) {
@@ -54,7 +60,7 @@ class GAProblem(
             bestResult = population.minBy { fitness(it) }
                 ?: throw RouteNotFoundException("Generic algorithm did not found the route")
             meanFitness = population.sumByDouble { fitness(it).toDouble() } / population.size
-            logger?.logLine("$generationNo; ${fitness(bestResult)}; $meanFitness")
+            detailLogger?.logLine("$generationNo; ${fitness(bestResult)}; $meanFitness")
         }
         return bestResult
     }

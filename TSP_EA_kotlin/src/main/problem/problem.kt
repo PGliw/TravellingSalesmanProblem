@@ -5,7 +5,7 @@ import kotlin.random.Random
 typealias Route = List<City>
 
 abstract class Problem(
-    filePath: String, protected val logger: ILogger? = null, protected val random: Random = Random
+    val filePath: String, var logger: ILogger? = null, protected val random: Random = Random
 ) : IFitnessProvider {
     protected val cities = loadData(filePath)
     private val distances = mutableMapOf<Pair<City, City>, Float>().apply {
@@ -28,7 +28,7 @@ abstract class Problem(
 
     fun solve(): Route {
         val result = solution()
-        logger?.logLine("Overall solution: ${fitness(result)}")
+        logger?.logLine("${fitness(result)}")
         logger?.close()
         return result
     }

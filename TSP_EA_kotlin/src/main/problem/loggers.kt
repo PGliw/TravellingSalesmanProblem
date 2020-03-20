@@ -1,31 +1,36 @@
 package main.problem
 
-import java.io.File
 import java.io.FileWriter
 
 interface ILogger {
     fun log(text: String)
     fun logLine(line: String) = log("$line\n")
     fun close() = run { }
+    fun isDetailed() = false
 }
 
-class ConsoleLogger : ILogger {
+class ConsoleLogger(private val showDetails: Boolean = false) : ILogger {
     override fun log(text: String) {
         print(text)
     }
+
+    override fun isDetailed() = showDetails
 }
 
-class CsvFileLogger(private val filepath: String) : ILogger {
+class FileLogger(private val filepath: String, var rowPrefix: String? = null, private val showDetails: Boolean = false) : ILogger {
 
     private val fileWriter by lazy {
         FileWriter(filepath, true)
     }
 
     override fun log(text: String) {
-        fileWriter.write(text)
+        val fullLog = (rowPrefix?.plus(";") ?: "")+" $text"
+        fileWriter.write(fullLog)
     }
 
-    override fun close(){
+    override fun close() {
         fileWriter.close()
     }
+
+    override fun isDetailed() = showDetails
 }
