@@ -28,7 +28,7 @@ class Problem(filePath: String, private val random: Random = Random) {
 
     fun random(draws: Int) = randomAlgorithm(cities, draws, random, this::fitnessFun)
 
-    fun generic(
+    fun genetic(
         populationSize: Int,
         crossOverProbability: Float,
         mutationProbability: Float,
@@ -73,6 +73,8 @@ class Problem(filePath: String, private val random: Random = Random) {
             }
             population = newGeneration
             bestResult = population.minBy { fitnessFun(it) }
+//            println("generation #$generationNo: ${bestResult?.map{it.id}}, ${fitnessFun(bestResult!!)}")
+//            println("generation #$generationNo - sum: ${population.sumByDouble { fitnessFun(it).toDouble() }}")
         }
         return bestResult ?: throw RouteNotFoundException("Generic algorithm did not found the route")
     }
