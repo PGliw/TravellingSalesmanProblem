@@ -2,6 +2,8 @@ package main.problem
 
 import main.utils.DataFileFormatException
 import java.io.File
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * @param filePath path to file with list of cities
@@ -53,3 +55,44 @@ fun Route.print() {
         println("|  " + city.distTo(this[(index + 1) % this.size]))
     }
 }
+
+/**
+ * Calculates standard deviation for collection of Floats
+ */
+fun Collection<Float>.std(): Double {
+    val avg = average()
+    val sd = fold(0.0) { accumulator, next ->
+        accumulator + (next - avg).pow(2)
+    }
+    return sqrt(sd / size)
+}
+
+/**
+ * Provides the fitness function value for given route
+ */
+interface IFitnessProvider {
+    /**
+     * @param route route of which length (fitness function value) will be calculated
+     * @return length given route
+     */
+    fun fitness(route: Route): Float
+}
+
+/**
+ * Retrieves the fitness function value from IFitnessProvider
+ */
+interface IFitnessReceiver {
+    /**
+     * @param provider IFitnessProvider which provides fitness function for calculation of route length
+     */
+    fun register(provider: IFitnessProvider)
+}
+
+/**
+ * Result of examination
+ * @param best the best of all results
+ * @param worst the worst of all results
+ * @param avg mean value of all results
+ * @param std standard deviation of all results
+ */
+data class ExaminationResult(val best: Float, val worst: Float, val avg: Float, val std: Float)

@@ -1,11 +1,12 @@
 package main.problem
 
+import main.utils.RouteNotFoundException
 import kotlin.random.Random
 
 typealias Route = List<City>
 
 abstract class Problem(
-    private val filePath: String, var logger: ILogger? = null, val random: Random = Random
+    filePath: String, var logger: ILogger? = null, val random: Random = Random
 ) : IFitnessProvider {
     protected val cities = loadData(filePath)
     private val distances = mutableMapOf<Pair<City, City>, Float>().apply {
@@ -33,16 +34,23 @@ abstract class Problem(
         return result
     }
 
+    fun examine(repetitions: Int): ExaminationResult {
+        if (repetitions <= 0) throw IllegalArgumentException("Number of repetitions must be greater than 0 (now: $repetitions)")
+        val results = mutableListOf<Float>()
+        repeat(repetitions) {
+            val result = solution()
+            results.add(fitness(result))
+        }
+        logger?.close()
+        return ExaminationResult(
+            results.min() ?: throw RouteNotFoundException("Best route not found"),
+            results.max() ?: throw RouteNotFoundException("Worst route not found"),
+            results.average().toFloat(),
+            results.std().toFloat()
+        )
+    }
+
     protected abstract fun solution(): Route
-}
-
-
-interface IFitnessProvider {
-    fun fitness(route: Route): Float
-}
-
-interface IFitnessReceiver {
-    fun register(provider: IFitnessProvider)
 }
 
 
