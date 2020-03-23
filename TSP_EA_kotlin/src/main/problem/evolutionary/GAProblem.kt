@@ -9,7 +9,7 @@ import kotlin.random.Random
 class GAProblem(
     filePath: String,
     var initializer: IInitializer,
-    var selector: ISelector,
+    selector: ISelector,
     private val crosser: ICrosser,
     var mutator: IMutator,
     var crossOverProbability: Float,
@@ -25,6 +25,12 @@ class GAProblem(
         if (mutationProbability < 0 || mutationProbability > 1) throw IllegalArgumentException("crossOverProbability must be between 0.0 and 1.0. Now is: $mutationProbability")
         selector.register(this)
     }
+
+    var selector = selector
+        set(value) {
+            field = value
+            field.register(this)
+        }
 
     private val detailLogger: ILogger?
         get() = when {

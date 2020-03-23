@@ -2,58 +2,48 @@ package main.problem.research
 
 import main.problem.Problem
 import main.problem.evolutionary.GAProblem
-import main.problem.evolutionary.ISelector
-import main.problem.evolutionary.TournamentSelector
 import main.utils.RouteNotFoundException
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 data class ExaminationResult(val best: Float, val worst: Float, val avg: Float, val std: Float)
 
+class Experiment<T>(
+    private val gaProblem: GAProblem,
+    private val parameterName: String,
+    getRestorePoint: (() -> T),
+    private val stateChange: ((T) -> Unit),
+    private val paramValues: Set<T>,
+    private val repetitions: Int,
+    private val filepath: String,
+    private val paramPrint: ((T) -> String) = {it.toString()}
+    ) {
+    private val restorePoint = getRestorePoint()
+    fun conduct() {
+        val results = gaProblem.investigateSingleParam(restorePoint, paramValues, repetitions, stateChange)
+        results.saveToFile(filepath, parameterName, paramValues.map { paramPrint(it) })
+    }
+}
+
+
 private fun <T> GAProblem.investigateSingleParam(
+    restoreValue: T,
     paramValues: Set<T>,
     repetitions: Int,
     stateChange: ((T) -> Unit)
 ): List<ExaminationResult> {
     val results = mutableListOf<ExaminationResult>()
-    val paramsToExamine = paramValues.toMutableList() //
+    val paramsToExamine = paramValues.toMutableList() // list of parameters to be checked
     while (paramsToExamine.isNotEmpty()) {
-        stateChange(paramsToExamine.removeFirst()) //
+        stateChange(paramsToExamine.removeFirst()) // check next parameter
         results.add(examine(repetitions))
     }
+    stateChange(restoreValue) // revert initial parameter value
     return results.toList()
 }
 
-fun GAProblem.investigateMutationProbability(mutationProbabilities: Set<Float>, repetitions: Int) =
-    investigateSingleParam(mutationProbabilities, repetitions) { newProbability ->
-        mutationProbability = newProbability
-    }
-
-fun GAProblem.investigateCrossOverProbability(crossOverProbabilities: Set<Float>, repetitions: Int) =
-    investigateSingleParam(crossOverProbabilities, repetitions) { newProbability ->
-        mutationProbability = newProbability
-    }
-
-fun GAProblem.investigateSelectionOperators(selectionOperators: Set<ISelector>, repetitions: Int) =
-    investigateSingleParam(selectionOperators, repetitions) { newSelector -> selector = newSelector }
-
-
-fun GAProblem.investigateTournamentSize(tournamentSizes: Set<Int>, repetitions: Int) =
-    investigateSingleParam(tournamentSizes, repetitions) { newTournamentSize ->
-        selector = TournamentSelector(newTournamentSize, random)
-    }
-
-fun GAProblem.investigateGenerationsNumber(generationsNumbers: Set<Int>, repetitions: Int) = investigateSingleParam(
-    generationsNumbers, repetitions
-) { newGenerationsNumber -> generations = newGenerationsNumber }
-
-
-fun GAProblem.investigatePopulationSize(populationSizes: Set<Int>, repetitions: Int) = investigateSingleParam(
-    populationSizes, repetitions
-) { newPopulationSize -> initializer.populationSize = newPopulationSize }
-
 fun Problem.examine(repetitions: Int): ExaminationResult {
-    if (repetitions <= 0) throw IllegalArgumentException("Number of repetitions must be greater than 0 (now: $repetitions")
+    if (repetitions <= 0) throw IllegalArgumentException("Number of repetitions must be greater than 0 (now: $repetitions)")
     val results = mutableListOf<Float>()
     repeat(repetitions) {
         val result = solve()
