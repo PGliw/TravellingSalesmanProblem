@@ -41,41 +41,45 @@ fun examBerlin52(){
         // 1.1. Population size
         Experiment(
             gaProblemBerlin52,
-            "Population size",
+            "Data set;Population size",
             gaProblemBerlin52.initializer::populationSize,
             { newPopulationSize: Int ->
                 gaProblemBerlin52.logger =
                     FileLogger(
-                        "$RESULTS_DIR\\${berlin52}\\ex_1_1_population_size_${berlin52}_log_population_size_${newPopulationSize}.csv",
-                        true
+                        "$RESULTS_DIR\\ex_1_1_population_size_log.txt",
+                        true,
+                        "$berlin52;$newPopulationSize"
                     )
                 gaProblemBerlin52.initializer.populationSize = newPopulationSize
             },
             generateSequence(10) { it + 5 }.takeWhile { it < 51 }.toSet(),
             10,
-            "$RESULTS_DIR\\${berlin52}\\ex_1_1_population_size_berlin_52.csv"
+            "$RESULTS_DIR\\ex_1_1_population_size.txt",
+            {newPopulationSize: Int -> "$berlin52;$newPopulationSize" }
         ),
         // 1.2. Number of generations
         Experiment(
             gaProblemBerlin52,
-            "Generations number",
+            "Data set;Generations number",
             gaProblemBerlin52::generations,
             { newGenerations: Int ->
                 gaProblemBerlin52.logger =
                     FileLogger(
-                        "$RESULTS_DIR\\${berlin52}\\ex_1_2_generations_no_${berlin52}_log_generations_no_${newGenerations}.csv",
-                        true
+                        "$RESULTS_DIR\\ex_1_2_generations_no_log.txt",
+                        true,
+                        "$berlin52;$newGenerations"
                     )
                 gaProblemBerlin52.generations = newGenerations
             },
             generateSequence(5) { it + 5 }.takeWhile { it < 101 }.toSet(),
             10,
-            "$RESULTS_DIR\\${berlin52}\\ex_1_2_generations_no_${berlin52}.csv"
+            "$RESULTS_DIR\\ex_1_2_generations_no.txt",
+            {newGenerations: Int -> "$berlin52;$newGenerations" }
         ),
         // 1.3. Tournament size - this id the ugly one, it uses type casting
         Experiment(
             gaProblemBerlin52population20,
-            "Tournament size",
+            "Data set;Tournament size",
             gaProblemBerlin52population20::selector,
             { newSelector: ISelector ->
                 val tournamentSize = when (newSelector) {
@@ -84,71 +88,75 @@ fun examBerlin52(){
                 }
                 gaProblemBerlin52.logger =
                     FileLogger(
-                        "$RESULTS_DIR\\${berlin52}\\ex_1_3_tournament_size_${berlin52}_log_tournament_size_${tournamentSize}.csv",
-                        true
+                        "$RESULTS_DIR\\ex_1_3_tournament_size_log.txt",
+                        true,
+                        "$berlin52;$tournamentSize"
                     )
                 gaProblemBerlin52population20.selector = newSelector
             },
             setOf(2, 4, 6, 8, 10, 12, 14, 16, 18, 20).map { TournamentSelector(it, random) }.toSet(),
             10,
-            "$RESULTS_DIR\\${berlin52}\\ex_1_3_tournament_size_${berlin52}.csv"
+            "$RESULTS_DIR\\ex_1_3_tournament_size.txt"
         ) {
             when (it) {
-                is TournamentSelector -> it.participants.toString()
+                is TournamentSelector -> "$$berlin52;${it.participants}"
                 else -> throw InvalidSelctorException("Expected tournament selector")
             }
         },
         // 2. Selection type
         Experiment(
             gaProblemBerlin52,
-            "Selection type",
+            "Data set;Selection type",
             gaProblemBerlin52::selector,
             { newSelector: ISelector ->
                 gaProblemBerlin52.logger =
                     FileLogger(
-                        "$RESULTS_DIR\\${berlin52}\\ex_2_selection_type_${berlin52}_log_selection_type_${newSelector.selectorType()}.csv",
-                        true
+                        "$RESULTS_DIR\\ex_2_selection_type_log.txt",
+                        true,
+                        "$berlin52;${newSelector.selectorType()}"
                     )
                 gaProblemBerlin52.selector = newSelector
             },
             setOf(TournamentSelector(10, random), RouletteSelector(0.2, random)),
             10,
-            "$RESULTS_DIR\\${berlin52}\\ex_2_selection_type_${berlin52}.csv"
-        ) { it.selectorType() },
+            "$RESULTS_DIR\\ex_2_selection_type.txt"
+        ) { "$berlin52;${it.selectorType()}" },
         // 3.1. CrossOver probability
         Experiment(
             gaProblemBerlin52,
-            "Cross over probability",
+            "Data set;Cross over probability",
             gaProblemBerlin52::crossOverProbability,
             { newCrossOverProbability ->
                 gaProblemBerlin52.logger =
                     FileLogger(
-                        "$RESULTS_DIR\\${berlin52}\\ex_3_1_crossover_prob_${berlin52}_log_crossover_prob_${newCrossOverProbability}.csv",
-                        true
+                        "$RESULTS_DIR\\ex_3_1_crossover_prob_log.txt",
+                        true,
+                        "$berlin52;$newCrossOverProbability"
                     )
                 gaProblemBerlin52.crossOverProbability = newCrossOverProbability
             },
             generateSequence(0.05) { it + 0.05 }.takeWhile { it < 1.0 }.map { it.toFloat() }.toSet(),
             10,
-            "$RESULTS_DIR\\${berlin52}\\ex_3_1_crossover_prob_${berlin52}_2.csv"
-        ),
+            "$RESULTS_DIR\\ex_3_1_crossover_prob.txt"
+        ){ "$berlin52;$it"},
         // 3.2 Mutation probability
         Experiment(
             gaProblemBerlin52,
-            "Mutation probability",
+            "Data set;Mutation probability",
             gaProblemBerlin52::mutationProbability,
             { newMutationProbability ->
                 gaProblemBerlin52.logger =
                     FileLogger(
-                        "$RESULTS_DIR\\${berlin52}\\ex_3_2_mutation_prob_${berlin52}_log_mutation_prob_${newMutationProbability}.csv",
-                        true
+                        "$RESULTS_DIR\\ex_3_2_mutation_prob_log.txt",
+                        true,
+                        "$berlin52;$newMutationProbability"
                     )
                 gaProblemBerlin52.mutationProbability = newMutationProbability
             },
             generateSequence(0.05) { it + 0.05 }.takeWhile { it < 1.0 }.map { it.toFloat() }.toSet(),
             10,
-            "$RESULTS_DIR\\${berlin52}\\ex_3_2_mutation_prob_${berlin52}_2.csv"
-        )
+            "$RESULTS_DIR\\ex_3_2_mutation_prob.txt"
+        ){"$berlin52;$it"}
         // TODO: 4. GA vs naive methods - random and greedy
     ).forEach { it.conduct() }
 }

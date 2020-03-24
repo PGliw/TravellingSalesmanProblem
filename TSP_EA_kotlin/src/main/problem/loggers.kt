@@ -28,7 +28,7 @@ class FileLogger(
     }
 
     override fun log(text: String) {
-        val fullLog = (rowPrefix?.plus(";") ?: "") + " $text"
+        val fullLog = (rowPrefix?.plus(";") ?: "") + text
         fileWriter.write(fullLog)
     }
 
