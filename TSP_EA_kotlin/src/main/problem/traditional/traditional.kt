@@ -12,7 +12,7 @@ class GreedyProblem(filePath: String, logger: ILogger? = null, random: Random = 
     override fun solution(): Route = greedyAlgorithm(cities, this::distanceFun, this::fitness)
 }
 
-class RandomProblem(filePath: String, private val draws: Int, logger: ILogger? = null, random: Random = Random) :
+class RandomProblem(filePath: String, var draws: Int, logger: ILogger? = null, random: Random = Random) :
     Problem(filePath, logger, random) {
     override fun solution(): Route = randomAlgorithm(cities, draws, random, this::fitness)
 }
