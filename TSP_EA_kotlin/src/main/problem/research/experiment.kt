@@ -1,9 +1,9 @@
 package main.problem.research
 
-import main.problem.evolutionary.GAProblem
+import main.problem.Problem
 
 /**
- * @param gaProblem Generic Algorithm Problem which would be the subject of this experiment
+ * @param problem Generic Algorithm Problem which would be the subject of this experiment
  * @param parameterHeader header of the column with parameter values - in most cases: parameter name (eg. population size)
  * @param getRestorePoint returns initial value of parameter which is changed throughout the experiment
  * @param stateChange state change that occurs foreach parameter value
@@ -13,7 +13,7 @@ import main.problem.evolutionary.GAProblem
  * @param paramPrint returns parameter value formatted to string, which will be used to denote parameter value in text file
  */
 class Experiment<T>(
-    private val gaProblem: GAProblem,
+    private val problem: Problem,
     private val parameterHeader: String,
     getRestorePoint: (() -> T),
     private val stateChange: ((T) -> Unit),
@@ -29,7 +29,7 @@ class Experiment<T>(
      * Saves results to a file given by filepath
      */
     fun conduct() {
-        val results = gaProblem.investigateSingleParam(restorePoint, paramValues, repetitions, stateChange)
+        val results = problem.investigateSingleParam(restorePoint, paramValues, repetitions, stateChange)
         results.saveToFile(filepath, parameterHeader, paramValues.map { paramPrint(it) })
     }
 }

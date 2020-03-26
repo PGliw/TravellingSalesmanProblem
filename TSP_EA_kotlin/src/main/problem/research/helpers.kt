@@ -1,6 +1,7 @@
 package main.problem.research
 
 import main.problem.ExaminationResult
+import main.problem.Problem
 import main.problem.evolutionary.GAProblem
 import java.io.BufferedWriter
 import java.io.File
@@ -21,7 +22,7 @@ fun List<ExaminationResult>.saveToFile(
     }
 }
 
-fun <T> GAProblem.investigateSingleParam(
+fun <T> Problem.investigateSingleParam(
     restoreValue: T,
     paramValues: Set<T>,
     repetitions: Int,
